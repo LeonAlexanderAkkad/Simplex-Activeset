@@ -1,1 +1,11 @@
 # Simplex-Activeset
+The `revised_simplex` and `active_set` method were implemented in order to solve linear programs **(LPs)** and quadratic programs **(QPs)** respectively. These methods were implemented in order to complete a group project in the course *Numerical Optimization* at **JKU** in the summer term of the year 2023. Both methods are based on the book *Numerical Optimization* by Jorge Nocedal and Stephen J. Wright.
+
+## Simplex method
+The task for the Simplex method was to solve **10 LPs** with either 2 or 10 variables. Moreover, for each of the **LPs** one had to choose 2 starting points, one feasible and one infeasible. This forced us to implement another method called `simplex_start` in order for the Simplex method to converge to the correct result when starting at an infeasible starting point. The problems themselves were not given, thus we either came up with our own problems or chose problems from the aforementioned book.
+
+## Active set method
+For the Active set method the not onlyobjective function to minimize but also the constraints were given. \
+The objective function: $$\frac12 ||Mx - y||^2$$ The constraints: $$\Vert x \Vert_1 = \sum_{i=1}^n |x_i| \leq 1$$
+In order to implement said constraints we utilized $n$ slack variables $z_i$. With them we encode the constraints as $x_i + z_i \geq 0 \Leftrightarrow - x_i \leq z_i$ and $-x_i + z_i \geq 0 \Leftrightarrow x_i \leq z_i$ which implies $|x_i| \leq z_i$ for all $i \in \{1, 2,...,n\}$. Furthermore we added one constraint stating that $\sum -z_i \geq -1 \Leftrightarrow  \sum z_i \leq 1$. Adding all this together we get $\sum |x_i| \leq \sum z_i \leq 1$. The advantage of this is that we get $2n+1$ constraints instead of the $2^n$ constraints we would normally get when encoding $\sum |x_i| \leq 1$ using the more straightforward way. \
+For this method we were given 5 different dimensions of the matrix $M$ where $M$ itself was chosen by us. For each of the 5 different dimensions, we were tasked to choose 3 starting points for the Active set method. The vector $y$ was chosen s.t. $\Vert y\Vert \geq \Vert M \Vert_2$, where $\Vert M \Vert_2$ is the spectral norm of $M$. The last **QP** was given in the task description and is implemented as `get_problem_M_tilde`.
